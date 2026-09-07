@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Искусственный интеллект? — Презентация</title>
+<style>
+@font-face {
+  font-family: 'Inter';
+  src: url('https://cdn.jsdelivr.net/fontsource/fonts/inter:vf@latest/latin-wght-normal.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+:root {
+  --bg: #000000;
+  --bg-surface: #111111;
+  --text: #F2F2F2;
+  --text-secondary: #A0A0A0;
+  --border: #2A2A2A;
+  --accent: #3A8A8F;
+  --accent-light: rgba(58,138,143,0.1);
+  --font: 'Inter', -apple-system, sans-serif;
+}
+
+[data-theme="light"] {
+  --bg: #FFFFFF;
+  --bg-surface: #F5F5F5;
+  --text: #111111;
+  --text-secondary: #666666;
+  --border: #E5E5E5;
+  --accent: #256569;
+  --accent-light: rgba(37,101,105,0.08);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.4s, color 0.4s;
+  -webkit-font-smoothing: antialiased;
+}
+
+#progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: var(--accent);
+  z-index: 100;
+  transition: width 0.5s ease;
+}
+
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 90;
+  padding: 1.25rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+}
+
+.topbar > * { pointer-events: auto; }
+
+.topbar-left {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-secondary);
+  transition: opacity 0.3s;
+  max-width: 50vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.topbar-right {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.slide-counter {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.theme-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+.slides {
+  height: 100vh;
+  width: 100%;
+  position: relative;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 2rem 4rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s ease, visibility 0.6s;
+}
+
+.slide.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.slide-inner {
+  max-width: 1100px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.slide .anim {
+  opacity: 0;
+  transform: translateY(25px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.slide.active .anim {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.slide.active .anim:nth-child(1) { transition-delay: 0.1s; }
+.slide.active .anim:nth-child(2) { transition-delay: 0.25s; }
+.slide.active .anim:nth-child(3) { transition-delay: 0.4s; }
+.slide.active .anim:nth-child(4) { transition-delay: 0.55s; }
+.slide.active .anim:nth-child(5) { transition-delay: 0.7s; }
+.slide.active .anim:nth-child(6) { transition-delay: 0.85s; }
+
+.label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+h1 {
+  font-size: clamp(2.5rem, 7vw, 5.5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-size: clamp(1.6rem, 4vw, 3rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+  max-width: 800px;
+}
+
+.subtitle {
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  color: var(--text-secondary);
+  max-width: 600px;
+  line-height: 1.5;
+  margin-bottom: 2rem;
+}
+
+.thesis {
+  font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+  line-height: 1.5;
+  max-width: 700px;
+  color: var(--text);
+}
+
+.thesis-secondary {
+  font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+  color: var(--text-secondary);
+  max-width: 600px;
+  line-height: 1.6;
+  margin-top: 1rem;
+}
+
+.accent { color: var(--accent); }
+
+.dots {
+  position: fixed;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 80;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--border);
+  cursor: pointer;
+  transition: all 0.3s;
+  border: none;
+  padding: 0;
+}
+
+.dot:hover { background: var(--text-secondary); transform: scale(1.5); }
+.dot.active { background: var(--accent); transform: scale(1.8); }
+
+.nav-arrows {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 80;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.nav-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+.nav-btn:disabled { opacity: 0.3; cursor: default; }
+.nav-btn:disabled:hover { border-color: var(--border); color: var(--text); }
+
+.nav-hint {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.1em;
+}
+
+/* Hero */
+.hero-visual {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.hero-visual svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(80vw, 600px);
+  height: min(80vw, 600px);
+  opacity: 0.06;
+}
+
+/* Pipeline */
+.pipeline-viz {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.pipe-node {
+  padding: 0.8rem 1.3rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.4s;
+  background: var(--bg);
+}
+
+.pipe-node.lit {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-light);
+  transform: scale(1.05);
+}
+
+.pipe-arrow {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  padding: 0 0.3rem;
+  opacity: 0.5;
+}
+
+/* Probability */
+.prob-viz {
+  width: 100%;
+  max-width: 550px;
+  margin: 2rem 0;
+}
+
+.prob-prompt {
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  font-weight: 500;
+  margin-bottom: 2rem;
+  font-style: italic;
+}
+
+.prob-prompt .blank {
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+  padding: 0 4px 2px;
+}
+
+.prob-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.prob-word {
+  width: 100px;
+  text-align: right;
+  font-size: 0.85rem;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.prob-track {
+  flex: 1;
+  height: 32px;
+  background: var(--bg-surface);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+
+.prob-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+  width: 0;
+  transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slide.active .prob-fill { width: var(--w); }
+
+.prob-pct {
+  width: 45px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  text-align: left;
+  flex-shrink: 0;
+}
+
+.prob-note {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  margin-top: 1rem;
+  font-style: italic;
+}
+
+/* Symbol */
+.symbol-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 2rem;
+  align-items: center;
+  margin: 2rem 0;
+  width: 100%;
+  max-width: 700px;
+}
+
+.symbol-box { text-align: center; }
+
+.symbol-box .s-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.symbol-word {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 700;
+}
+
+.symbol-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.s-tag {
+  font-size: 0.8rem;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--text-secondary);
+  transition: all 0.3s;
+  cursor: default;
+}
+
+.s-tag:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.symbol-arrow-big {
+  font-size: 2rem;
+  color: var(--text-secondary);
+}
+
+/* Positions */
+.positions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin: 2rem 0;
+  width: 100%;
+  max-width: 800px;
+}
+
+.pos-card {
+  padding: 2rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  text-align: left;
+  transition: all 0.3s;
+  cursor: default;
+}
+
+.pos-card:hover { border-color: var(--accent); }
+
+.pos-card .pos-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.pos-card p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* Chinese Room */
+.room-viz {
+  width: 100%;
+  max-width: 700px;
+  margin: 2rem 0;
+  position: relative;
+}
+
+.room-box-outer {
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  padding: 2.5rem 2rem;
+  position: relative;
+  background: var(--bg-surface);
+  transition: border-color 0.4s;
+}
+
+.room-box-outer.lit { border-color: var(--accent); }
+
+.room-tag {
+  position: absolute;
+  top: -0.6rem;
+  left: 1.5rem;
+  background: var(--bg-surface);
+  padding: 0 0.5rem;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.room-flow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.room-node {
+  padding: 1rem 1.3rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg);
+  text-align: center;
+  min-width: 120px;
+  transition: all 0.4s;
+}
+
+.room-node.center {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+
+.room-node .n-label {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+  margin-bottom: 0.4rem;
+}
+
+.room-node .n-content {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.room-node .n-sub {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  margin-top: 0.2rem;
+}
+
+.room-arrow { color: var(--accent); font-size: 1.2rem; }
+
+.room-insight {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-style: italic;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* Counters */
+.counters-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  margin: 2rem 0;
+  width: 100%;
+  max-width: 800px;
+}
+
+.counter-card {
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  text-align: left;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.counter-card:hover {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+
+.counter-card h3 {
+  font-size: 0.9rem;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.counter-card p {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+/* Levels */
+.levels-viz {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-width: 700px;
+  margin: 2rem 0;
+}
+
+.level-item {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.2rem 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  text-align: left;
+  transition: all 0.3s;
+  cursor: default;
+}
+
+.level-item:hover { border-color: var(--accent); }
+
+.level-num {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent);
+  flex-shrink: 0;
+  width: 40px;
+}
+
+.level-text h3 {
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+}
+
+.level-text p {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* Scale */
+.scale-viz {
+  width: 100%;
+  max-width: 800px;
+  margin: 2.5rem 0;
+  position: relative;
+}
+
+.scale-line {
+  position: relative;
+  height: 2px;
+  background: var(--border);
+  margin: 2rem 0;
+}
+
+.scale-fill-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--accent);
+  width: 0;
+  transition: width 1s ease;
+}
+
+.slide.active .scale-fill-line { width: var(--fill); }
+
+.scale-points {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.scale-p {
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.scale-p:hover .scale-dot { transform: scale(1.5); background: var(--accent); border-color: var(--accent); }
+
+.scale-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--bg);
+  margin: -7px auto 0.5rem;
+  transition: all 0.3s;
+}
+
+.scale-p-label {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.scale-question {
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  color: var(--accent);
+  margin-top: 2rem;
+  font-style: italic;
+}
+
+/* Claims */
+.claims-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  width: 100%;
+  max-width: 700px;
+  margin: 2rem 0;
+}
+
+.claim-card {
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-align: left;
+}
+
+.claim-card:hover { border-color: var(--accent); }
+
+.claim-card.open {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+
+.claim-q {
+  font-size: 0.95rem;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.claim-toggle {
+  color: var(--accent);
+  font-size: 1.2rem;
+  transition: transform 0.3s;
+}
+
+.claim-card.open .claim-toggle { transform: rotate(45deg); }
+
+.claim-a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, margin 0.4s ease;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.claim-card.open .claim-a {
+  max-height: 200px;
+  margin-top: 1rem;
+}
+
+/* Conclusion */
+.conclusion-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 900px;
+  margin: 2rem 0;
+}
+
+.conc-card {
+  padding: 2rem 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  text-align: left;
+  transition: all 0.3s;
+}
+
+.conc-card:hover { border-color: var(--accent); }
+
+.conc-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.conc-card p {
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+/* Final */
+.final-question {
+  font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+  font-weight: 500;
+  line-height: 1.4;
+  max-width: 750px;
+  margin-bottom: 2.5rem;
+}
+
+.final-answer {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 550px;
+}
+
+/* Bibliography */
+.biblio-wrap {
+  width: 100%;
+  max-width: 1000px;
+  text-align: left;
+}
+
+.biblio-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 2rem;
+  margin-top: 1.5rem;
+}
+
+.biblio-item {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+  transition: border-color 0.3s;
+}
+
+.biblio-item:hover { border-color: var(--accent); }
+
+.biblio-num {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--accent);
+  flex-shrink: 0;
+  width: 20px;
+  font-variant-numeric: tabular-nums;
+  padding-top: 2px;
+}
+
+.biblio-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.biblio-title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 0.15rem;
+}
+
+.biblio-meta {
+  font-size: 0.68rem;
+  color: var(--text-secondary);
+  line-height: 1.3;
+}
+
+.biblio-section {
+  font-size: 0.62rem;
+  color: var(--accent);
+  margin-top: 0.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.biblio-footer {
+  margin-top: 1.5rem;
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  text-align: center;
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dots { display: none; }
+  .positions-grid, .counters-grid, .claims-grid { grid-template-columns: 1fr; }
+  .conclusion-grid { grid-template-columns: 1fr; }
+  .symbol-grid { grid-template-columns: 1fr; }
+  .symbol-arrow-big { transform: rotate(90deg); }
+  .scale-p-label { font-size: 0.6rem; }
+  .topbar { padding: 1rem 1.25rem; }
+  .slide { padding: 4.5rem 1.25rem 5rem; }
+  .nav-arrows { bottom: 1.5rem; }
+  .biblio-grid { grid-template-columns: 1fr; }
+  .topbar-left { max-width: 45vw; font-size: 0.6rem; }
+}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<div class="topbar">
+  <div class="topbar-left" id="slideTitle">Искусственный интеллект?</div>
+  <div class="topbar-right">
+    <span class="slide-counter"><span id="curSlide">1</span> / <span id="totalSlides">15</span></span>
+    <button class="theme-btn" id="themeBtn" aria-label="Тема">◐</button>
+  </div>
+</div>
+
+<div class="dots" id="dots"></div>
+
+<div class="slides" id="slides">
+
+  <!-- SLIDE 1: HERO -->
+  <div class="slide active" data-slide="0" data-title="Искусственный интеллект?">
+    <div class="hero-visual">
+      <svg viewBox="0 0 400 400" fill="none">
+        <circle cx="200" cy="200" r="3" fill="currentColor" opacity="0.4"/>
+        <circle cx="100" cy="140" r="2" fill="currentColor" opacity="0.3"/>
+        <circle cx="300" cy="120" r="2" fill="currentColor" opacity="0.3"/>
+        <circle cx="130" cy="290" r="2" fill="currentColor" opacity="0.3"/>
+        <circle cx="280" cy="270" r="2" fill="currentColor" opacity="0.3"/>
+        <circle cx="60" cy="210" r="1.5" fill="currentColor" opacity="0.2"/>
+        <circle cx="340" cy="190" r="1.5" fill="currentColor" opacity="0.2"/>
+        <circle cx="200" cy="70" r="1.5" fill="currentColor" opacity="0.2"/>
+        <circle cx="200" cy="330" r="1.5" fill="currentColor" opacity="0.2"/>
+        <line x1="200" y1="200" x2="100" y2="140" stroke="currentColor" stroke-width="0.5" opacity="0.2"/>
+        <line x1="200" y1="200" x2="300" y2="120" stroke="currentColor" stroke-width="0.5" opacity="0.2"/>
+        <line x1="200" y1="200" x2="130" y2="290" stroke="currentColor" stroke-width="0.5" opacity="0.2"/>
+        <line x1="200" y1="200" x2="280" y2="270" stroke="currentColor" stroke-width="0.5" opacity="0.2"/>
+        <line x1="100" y1="140" x2="200" y2="70" stroke="currentColor" stroke-width="0.3" opacity="0.15"/>
+        <line x1="300" y1="120" x2="340" y2="190" stroke="currentColor" stroke-width="0.3" opacity="0.15"/>
+        <line x1="130" y1="290" x2="60" y2="210" stroke="currentColor" stroke-width="0.3" opacity="0.15"/>
+        <line x1="280" y1="270" x2="200" y2="330" stroke="currentColor" stroke-width="0.3" opacity="0.15"/>
+      </svg>
+    </div>
+    <div class="slide-inner">
+      <p class="label anim">Философский цифровой доклад</p>
+      <h1 class="anim">Искусственный<br>интеллект<span class="accent">?</span></h1>
+      <p class="subtitle anim">Как машина учится говорить — и почему это ещё не обязательно означает, что она понимает</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: PIPELINE -->
+  <div class="slide" data-slide="1" data-title="01 — Механика">
+    <div class="slide-inner">
+      <p class="label anim"></p>
+      <h2 class="anim">Что происходит, когда мы пишем модели?</h2>
+      <div class="pipeline-viz anim" id="pipeline">
+        <div class="pipe-node">Человек</div>
+        <span class="pipe-arrow">→</span>
+        <div class="pipe-node">Текст</div>
+        <span class="pipe-arrow">→</span>
+        <div class="pipe-node">Токены</div>
+        <span class="pipe-arrow">→</span>
+        <div class="pipe-node">Векторы</div>
+        <span class="pipe-arrow">→</span>
+        <div class="pipe-node">Attention</div>
+        <span class="pipe-arrow">→</span>
+        <div class="pipe-node">Вероятности</div>
+        <span class="pipe-arrow">→</span>
+        <div class="pipe-node">Токен</div>
+        <span class="pipe-arrow">→</span>
+        <div class="pipe-node">Ответ</div>
+      </div>
+      <p class="thesis-secondary anim">Контекст → распределение вероятностей → выбор токена → новый контекст → повторение</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: PROBABILITY -->
+  <div class="slide" data-slide="2" data-title="02 — Вероятности">
+    <div class="slide-inner">
+      <p class="label anim"></p>
+      <h2 class="anim">Модель вычисляет, что может появиться дальше</h2>
+      <div class="prob-viz anim">
+        <p class="prob-prompt">«Небо обычно <span class="blank">___</span>»</p>
+        <div class="prob-row">
+          <span class="prob-word">голубое</span>
+          <div class="prob-track"><div class="prob-fill" style="--w:72%"></div></div>
+          <span class="prob-pct">72%</span>
+        </div>
+        <div class="prob-row">
+          <span class="prob-word">синее</span>
+          <div class="prob-track"><div class="prob-fill" style="--w:18%"></div></div>
+          <span class="prob-pct">18%</span>
+        </div>
+        <div class="prob-row">
+          <span class="prob-word">пасмурное</span>
+          <div class="prob-track"><div class="prob-fill" style="--w:4%"></div></div>
+          <span class="prob-pct">4%</span>
+        </div>
+        <div class="prob-row">
+          <span class="prob-word">зелёное</span>
+          <div class="prob-track"><div class="prob-fill" style="--w:0.5%"></div></div>
+          <span class="prob-pct">0,2%</span>
+        </div>
+        <p class="prob-note">* Условная визуализация, не реальные вероятности</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: WHY IT LOOKS INTELLIGENT -->
+  <div class="slide" data-slide="3" data-title="03 — Наблюдение">
+    <div class="slide-inner">
+      <p class="label anim"></p>
+      <h2 class="anim">Почему это выглядит как мышление?</h2>
+      <p class="thesis anim">Язык содержит огромные закономерности. Обучение на больших массивах текста формирует сложные внутренние представления — и поведение, внешне напоминающее рассуждение.</p>
+      <p class="thesis-secondary anim" style="margin-top:2rem; padding: 1.5rem 2rem; border-left: 3px solid var(--accent); text-align: left; max-width: 600px;">
+        Аналогия объясняет <strong>поведение</strong>,<br>но не доказывает <strong>понимание</strong>.
+      </p>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: SYMBOL ≠ MEANING -->
+  <div class="slide" data-slide="4" data-title="04 — Проблема">
+    <div class="slide-inner">
+      <p class="label anim"></p>
+      <h2 class="anim">Слово ≠ смысл</h2>
+      <div class="symbol-grid anim">
+        <div class="symbol-box">
+          <p class="s-label">Символ</p>
+          <p class="symbol-word">яблоко</p>
+        </div>
+        <div class="symbol-arrow-big">→</div>
+        <div class="symbol-box">
+          <p class="s-label">Связи в модели</p>
+          <div class="symbol-tags">
+            <span class="s-tag">фрукт</span>
+            <span class="s-tag">дерево</span>
+            <span class="s-tag">красное</span>
+            <span class="s-tag">еда</span>
+            <span class="s-tag">Ньютон</span>
+            <span class="s-tag">магазин</span>
+            <span class="s-tag">сок</span>
+            <span class="s-tag">сад</span>
+          </div>
+        </div>
+      </div>
+      <p class="thesis accent anim" style="font-style: italic;">Означает ли наличие связей, что система <em>знает</em>, что такое яблоко?</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: TURING -->
+  <div class="slide" data-slide="5" data-title="05 — Тест Тьюринга · 1950">
+    <div class="slide-inner">
+      <p class="label anim"></p>
+      <h2 class="anim">Если поведение неотличимо — есть ли разница?</h2>
+      <div class="positions-grid anim">
+        <div class="pos-card">
+          <p class="pos-label">Позиция 1</p>
+          <p>Если система демонстрирует интеллектуальное поведение, различать «настоящий» и «искусственный» интеллект может не иметь практического смысла.</p>
+        </div>
+        <div class="pos-card">
+          <p class="pos-label">Позиция 2</p>
+          <p>Поведение не раскрывает внутреннюю природу процесса. Можно имитировать симптомы болезни, не будучи больным. Внешнее ≠ внутреннее.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: CHINESE ROOM -->
+  <div class="slide" data-slide="6" data-title="06 — Китайская комната · Сёрл, 1980">
+    <div class="slide-inner">
+      <p class="label anim"></p>
+      <h2 class="anim">Можно ли использовать язык, не понимая его?</h2>
+      <div class="room-viz anim">
+        <div class="room-box-outer" id="roomOuter">
+          <span class="room-tag">Китайская комната</span>
+          <div class="room-flow">
+            <div class="room-node">
+              <p class="n-label">Вход</p>
+              <p class="n-content">你好吗？</p>
+              <p class="n-sub">«Как дела?»</p>
+            </div>
+            <span class="room-arrow">→</span>
+            <div class="room-node center">
+              <p class="n-label">Правила</p>
+              <p class="n-content" style="font-size:0.95rem;">символы → символы</p>
+              <p class="n-sub">манипуляция форм</p>
+            </div>
+            <span class="room-arrow">→</span>
+            <div class="room-node">
+              <p class="n-label">Выход</p>
+              <p class="n-content">我很好，谢谢。</p>
+              <p class="n-sub">«Хорошо, спасибо»</p>
+            </div>
+          </div>
+          <div class="room-insight">Снаружи: «Он говорит по-китайски». Внутри: «Я не понимаю эти символы».</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: CONNECTION -->
+  <div class="slide" data-slide="7" data-title="07 — Связь с LLM">
+    <div class="slide-inner">
+      <p class="label anim"></p>
+      <h2 class="anim">Синтаксис ≠ семантика</h2>
+      <p class="thesis anim">Правильное преобразование символов по формальным правилам само по себе не доказывает понимания их значения.</p>
+      <p class="thesis-secondary anim" style="margin-top: 2rem;">LLM может: вести диалог, объяснять, переводить, писать код, строить аргументы.</p>
+      <p class="thesis-secondary anim" style="margin-top: 1rem;">Но из этого <strong>не следует автоматически</strong>: наличие сознания, субъективного опыта, понимания, намерений.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 9: COUNTERS -->
+  <div class="slide" data-slide="8" data-title="08 — Возражения">
+    <div class="slide-inner">
+      <p class="label anim"></p>
+      <h2 class="anim">У китайской комнаты есть контраргументы</h2>
+      <div class="counters-grid anim">
+        <div class="counter-card">
+          <h3>Система в целом</h3>
+          <p>Понимание — свойство системы «человек + правила + память», а не отдельного компонента.</p>
+        </div>
+        <div class="counter-card">
+          <h3>Робот</h3>
+          <p>Понимание может возникать из взаимодействия с физическим миром, а не только из символов.</p>
+        </div>
+        <div class="counter-card">
+          <h3>Мозг</h3>
+          <p>Нейроны тоже «не понимают» — но мозг в целом понимает. Физические процессы могут порождать смысл.</p>
+        </div>
+        <div class="counter-card">
+          <h3>Другие сознания</h3>
+          <p>Мы не можем доказать наличие чужого сознания — даже у другого человека.</p>
+        </div>
+      </div>
+      <p class="thesis accent anim" style="font-size: 1.1rem; margin-top: 1rem;">Китайская комната не закрывает вопрос. Она делает его неизбежным.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: 3 LEVELS -->
+  <div class="slide" data-slide="9" data-title="09 — Три уровня">
+    <div class="slide-inner">
+      <p class="label anim"></p>
+      <h2 class="anim">Что мы называем «интеллектом»?</h2>
+      <div class="levels-viz anim">
+        <div class="level-item">
+          <div class="level-num">1</div>
+          <div class="level-text">
+            <h3>Способность решать задачи</h3>
+            <p>Классификация, генерация, закономерности. Термин практичен.</p>
+          </div>
+        </div>
+        <div class="level-item">
+          <div class="level-num">2</div>
+          <div class="level-text">
+            <h3>Понимание</h3>
+            <p>Система осознаёт смысл. Здесь начинаются философские проблемы.</p>
+          </div>
+        </div>
+        <div class="level-item">
+          <div class="level-num">3</div>
+          <div class="level-text">
+            <h3>Сознательная деятельность субъекта</h3>
+            <p>Внутренний субъект, для которого что-то имеет значение. Технология этого не решает.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 11: SCALE -->
+  <div class="slide" data-slide="10" data-title="10 — Граница">
+    <div class="slide-inner">
+      <p class="label anim"></p>
+      <h2 class="anim">Где заканчивается вычисление?</h2>
+      <div class="scale-viz anim">
+        <div class="scale-points">
+          <div class="scale-p"><p class="scale-p-label">Калькулятор</p><div class="scale-dot"></div></div>
+          <div class="scale-p"><p class="scale-p-label">Поисковик</p><div class="scale-dot"></div></div>
+          <div class="scale-p"><p class="scale-p-label">Экспертная система</p><div class="scale-dot"></div></div>
+          <div class="scale-p"><p class="scale-p-label">LLM</p><div class="scale-dot"></div></div>
+          <div class="scale-p"><p class="scale-p-label">Агент</p><div class="scale-dot"></div></div>
+          <div class="scale-p"><p class="scale-p-label">Человек</p><div class="scale-dot"></div></div>
+        </div>
+        <div class="scale-line"><div class="scale-fill-line" style="--fill: 65%"></div></div>
+      </div>
+      <p class="scale-question anim">В какой точке начинается интеллект?</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 12: CLAIMS -->
+  <div class="slide" data-slide="11" data-title="Что именно мы наблюдаем?">
+    <div class="slide-inner">
+      <p class="label anim">11 — Наблюдение vs интерпретация</p>
+      <h2 class="anim">Что именно мы наблюдаем?</h2>
+      <div class="claims-grid anim">
+        <div class="claim-card">
+          <div class="claim-q"><span>«Модель знает»</span><span class="claim-toggle">+</span></div>
+          <div class="claim-a">Или она настолько хорошо моделирует закономерности, что её поведение неотличимо от знающего?</div>
+        </div>
+        <div class="claim-card">
+          <div class="claim-q"><span>«Модель понимает»</span><span class="claim-toggle">+</span></div>
+          <div class="claim-a">Поведенческие данные не дают способа отличить понимание от сложной обработки символов.</div>
+        </div>
+        <div class="claim-card">
+          <div class="claim-q"><span>«Модель думает»</span><span class="claim-toggle">+</span></div>
+          <div class="claim-a">Всё зависит от определения «думать». Субъективный опыт — вопрос открытый.</div>
+        </div>
+        <div class="claim-card">
+          <div class="claim-q"><span>«Модель отвечает»</span><span class="claim-toggle">+</span></div>
+          <div class="claim-a">Это наблюдаемый факт. Мы действительно видим генерацию ответа. Это не интерпретация.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 13: CONCLUSION -->
+  <div class="slide" data-slide="12" data-title="12 — Вывод">
+    <div class="slide-inner">
+      <p class="label anim"></p>
+      <h2 class="anim">Так что же перед нами?</h2>
+      <div class="conclusion-grid anim">
+        <div class="conc-card">
+          <p class="conc-label">Технологически</p>
+          <p>Математическая система, обученная находить закономерности и генерировать токены.</p>
+        </div>
+        <div class="conc-card">
+          <p class="conc-label">Функционально</p>
+          <p>Система, демонстрирующая поведение, которое мы связываем с интеллектом.</p>
+        </div>
+        <div class="conc-card">
+          <p class="conc-label">Философски</p>
+          <p>Открытый вопрос: понимание или его убедительная имитация?</p>
+        </div>
+      </div>
+      <p class="thesis-secondary anim" style="margin-top: 1.5rem; font-style: italic; max-width: 650px;">Главный вопрос — не «насколько умной стала машина?», а «что мы вообще называем интеллектом?»</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 14: FINAL -->
+  <div class="slide" data-slide="13" data-title="13 — Финал">
+    <div class="slide-inner">
+      <p class="final-question anim">Если система говорит как человек, рассуждает как человек и решает задачи как человек — достаточно ли этого, чтобы считать её мыслящей?</p>
+      <p class="final-answer anim">На этот вопрос технология пока не отвечает.<br>Его приходится задавать философии.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 15: BIBLIOGRAPHY -->
+  <div class="slide" data-slide="14" data-title="Источники">
+    <div class="slide-inner">
+      <p class="label anim">Библиография</p>
+      <h2 class="anim" style="font-size: clamp(1.4rem, 3vw, 2rem);">Источники</h2>
+      <div class="biblio-wrap anim">
+        <div class="biblio-grid">
+          <div class="biblio-item">
+            <span class="biblio-num">01</span>
+            <div class="biblio-content">
+              <p class="biblio-title">Searle, 1980 — Minds, Brains, and Programs</p>
+              <p class="biblio-meta">Behavioral and Brain Sciences, 3(3)</p>
+              <p class="biblio-section">Китайская комната</p>
+            </div>
+          </div>
+          <div class="biblio-item">
+            <span class="biblio-num">02</span>
+            <div class="biblio-content">
+              <p class="biblio-title">SEP — The Chinese Room Argument</p>
+              <p class="biblio-meta">Stanford Encyclopedia of Philosophy</p>
+              <p class="biblio-section">Китайская комната и возражения</p>
+            </div>
+          </div>
+          <div class="biblio-item">
+            <span class="biblio-num">03</span>
+            <div class="biblio-content">
+              <p class="biblio-title">Turing, 1950 — Computing Machinery and Intelligence</p>
+              <p class="biblio-meta">Mind, 59(236)</p>
+              <p class="biblio-section">Тест Тьюринга</p>
+            </div>
+          </div>
+          <div class="biblio-item">
+            <span class="biblio-num">04</span>
+            <div class="biblio-content">
+              <p class="biblio-title">SEP — The Turing Test</p>
+              <p class="biblio-meta">Stanford Encyclopedia of Philosophy</p>
+              <p class="biblio-section">Тьюринг и проблема поведения</p>
+            </div>
+          </div>
+          <div class="biblio-item">
+            <span class="biblio-num">05</span>
+            <div class="biblio-content">
+              <p class="biblio-title">McCarthy et al., 1955 — Dartmouth Proposal</p>
+              <p class="biblio-meta">A Proposal for the Dartmouth Summer Research Project</p>
+              <p class="biblio-section">Возникновение AI</p>
+            </div>
+          </div>
+          <div class="biblio-item">
+            <span class="biblio-num">06</span>
+            <div class="biblio-content">
+              <p class="biblio-title">SEP — Artificial Intelligence</p>
+              <p class="biblio-meta">Stanford Encyclopedia of Philosophy</p>
+              <p class="biblio-section">Что такое AI философски</p>
+            </div>
+          </div>
+          <div class="biblio-item">
+            <span class="biblio-num">07</span>
+            <div class="biblio-content">
+              <p class="biblio-title">SEP — Computational Theory of Mind</p>
+              <p class="biblio-meta">Stanford Encyclopedia of Philosophy</p>
+              <p class="biblio-section">Вычисление и сознание</p>
+            </div>
+          </div>
+          <div class="biblio-item">
+            <span class="biblio-num">08</span>
+            <div class="biblio-content">
+              <p class="biblio-title">Vaswani et al., 2017 — Attention Is All You Need</p>
+              <p class="biblio-meta">Advances in Neural Information Processing Systems, 30</p>
+              <p class="biblio-section">Transformer</p>
+            </div>
+          </div>
+          <div class="biblio-item">
+            <span class="biblio-num">09</span>
+            <div class="biblio-content">
+              <p class="biblio-title">Brown et al., 2020 — Language Models are Few-Shot Learners</p>
+              <p class="biblio-meta">Advances in Neural Information Processing Systems, 33</p>
+              <p class="biblio-section">LLM / GPT</p>
+            </div>
+          </div>
+          <div class="biblio-item">
+            <span class="biblio-num">10</span>
+            <div class="biblio-content">
+              <p class="biblio-title">Ouyang et al., 2022 — InstructGPT</p>
+              <p class="biblio-meta">Training language models to follow instructions with human feedback</p>
+              <p class="biblio-section">Обучение с обратной связью</p>
+            </div>
+          </div>
+          <div class="biblio-item">
+            <span class="biblio-num">11</span>
+            <div class="biblio-content">
+              <p class="biblio-title">Bommasani et al., 2021 — Foundation Models</p>
+              <p class="biblio-meta">On the Opportunities and Risks of Foundation Models</p>
+              <p class="biblio-section">Современные LLM</p>
+            </div>
+          </div>
+          <div class="biblio-item">
+            <span class="biblio-num">12</span>
+            <div class="biblio-content">
+              <p class="biblio-title">Schaeffer et al., 2023 — Emergent Abilities</p>
+              <p class="biblio-meta">Are Emergent Abilities of Large Language Models a Mirage?</p>
+              <p class="biblio-section">Критический анализ возможностей</p>
+            </div>
+          </div>
+        </div>
+        <p class="biblio-footer">Философский цифровой доклад · Финансовый университет при Правительстве РФ</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="nav-arrows">
+  <button class="nav-btn" id="prevBtn" aria-label="Назад">←</button>
+  <span class="nav-hint">← → или пробел</span>
+  <button class="nav-btn" id="nextBtn" aria-label="Вперёд">→</button>
+</div>
+
+<script>
+(function() {
+  var slides = document.querySelectorAll('.slide');
+  var total = slides.length;
+  var current = 0;
+  var progress = document.getElementById('progress');
+  var dotsContainer = document.getElementById('dots');
+  var curSlideEl = document.getElementById('curSlide');
+  var totalSlidesEl = document.getElementById('totalSlides');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var slideTitleEl = document.getElementById('slideTitle');
+
+  totalSlidesEl.textContent = total;
+
+  // Collect titles
+  var titles = [];
+  slides.forEach(function(s) {
+    titles.push(s.getAttribute('data-title') || '');
+  });
+
+  // Create dots
+  for (var i = 0; i < total; i++) {
+    var dot = document.createElement('button');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('data-i', i);
+    dot.setAttribute('aria-label', 'Слайд ' + (i + 1));
+    dot.addEventListener('click', function() {
+      goTo(parseInt(this.getAttribute('data-i')));
+    });
+    dotsContainer.appendChild(dot);
+  }
+
+  var dots = document.querySelectorAll('.dot');
+
+  function updateTitle(idx) {
+    slideTitleEl.style.opacity = '0';
+    setTimeout(function() {
+      slideTitleEl.textContent = titles[idx] || '';
+      slideTitleEl.style.opacity = '1';
+    }, 150);
+  }
+
+  function goTo(idx) {
+    if (idx < 0 || idx >= total || idx === current) return;
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = idx;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+    curSlideEl.textContent = current + 1;
+    progress.style.width = ((current / (total - 1)) * 100) + '%';
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === total - 1;
+    updateTitle(current);
+  }
+
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+
+  prevBtn.addEventListener('click', prev);
+  nextBtn.addEventListener('click', next);
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+      e.preventDefault();
+      next();
+    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+      e.preventDefault();
+      prev();
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      goTo(0);
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      goTo(total - 1);
+    }
+  });
+
+  // Touch / swipe
+  var touchStartX = 0;
+  var touchStartY = 0;
+  document.addEventListener('touchstart', function(e) {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+
+  document.addEventListener('touchend', function(e) {
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    var dy = e.changedTouches[0].clientY - touchStartY;
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+      if (dx < 0) next(); else prev();
+    }
+  }, { passive: true });
+
+  // Wheel
+  var wheelLock = false;
+  document.addEventListener('wheel', function(e) {
+    if (wheelLock) return;
+    if (Math.abs(e.deltaY) > 30) {
+      wheelLock = true;
+      if (e.deltaY > 0) next(); else prev();
+      setTimeout(function() { wheelLock = false; }, 700);
+    }
+  }, { passive: true });
+
+  // Theme
+  var themeBtn = document.getElementById('themeBtn');
+  var htmlEl = document.documentElement;
+
+  function setTheme(t) {
+    htmlEl.setAttribute('data-theme', t);
+    try { localStorage.setItem('theme', t); } catch(e) {}
+  }
+
+  themeBtn.addEventListener('click', function() {
+    setTheme(htmlEl.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+
+  try {
+    var saved = localStorage.getItem('theme');
+    if (saved) setTheme(saved);
+  } catch(e) {}
+
+  // Claims toggle
+  document.querySelectorAll('.claim-card').forEach(function(card) {
+    card.addEventListener('click', function() {
+      card.classList.toggle('open');
+    });
+  });
+
+  // Init
+  prevBtn.disabled = true;
+  progress.style.width = '0%';
+  slideTitleEl.textContent = titles[0] || '';
+})();
+</script>
+
+</body>
+</html>
